@@ -23,6 +23,19 @@ layers:
       artifact: layer-tar-arm64.zip
 
 functions:
+  dump-base-2-x86_64:
+    handler: dump-base-2/handler.handler_x86_64
+    runtime: nodejs12.x
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-base-2-arm64:
+    handler: dump-base-2/handler.handler_arm64
+    runtime: nodejs12.x
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
   dump-python39-x86_64:
     handler: dump-python39.handler.lambda_handler_x86_64
     runtime: python3.9
