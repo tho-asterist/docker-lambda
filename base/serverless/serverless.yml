@@ -1,0 +1,37 @@
+service: docker-lambda-dump
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  lambdaHashingVersion: 20201221
+  profile: lupine
+  timeout: 900
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:*"
+      Resource:
+        - "*"
+
+layers:
+  TarX86:
+    package:
+      artifact: layer-tar-x86_64.zip
+  TarARM:
+    package:
+      artifact: layer-tar-arm64.zip
+
+functions:
+  dump-python39-x86_64:
+    handler: dump-python39.handler.lambda_handler_x86_64
+    runtime: python3.9
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-python39-arm64:
+    handler: dump-python39.handler.lambda_handler_arm64
+    runtime: python3.9
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
