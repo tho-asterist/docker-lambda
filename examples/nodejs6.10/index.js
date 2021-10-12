@@ -1,11 +1,11 @@
 // Just a test lambda, run with:
-// docker run --rm -v "$PWD":/var/task lambci/lambda:nodejs4.3
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs4.3
 // OR
-// docker run --rm -v "$PWD":/var/task lambci/lambda:nodejs6.10
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs6.10
 // OR
-// docker run --rm -v "$PWD":/var/task lambci/lambda:nodejs8.10
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs8.10
 
-exports.handler = function(event, context, cb) {
+exports.handler = function (event, context, cb) {
 
   console.log(process.execPath)
   console.log(process.execArgv)
@@ -31,4 +31,3 @@ exports.handler = function(event, context, cb) {
 
   cb()
 }
-

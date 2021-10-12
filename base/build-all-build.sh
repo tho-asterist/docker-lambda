@@ -10,5 +10,5 @@ for RUNTIME in $RUNTIMES; do
 
   cd ${TOP_DIR}/${RUNTIME}/build
 
-  docker build -t lambci/lambda:build-${RUNTIME} .
+  docker build -t mlupin/docker-lambda:build-${RUNTIME} .
 done

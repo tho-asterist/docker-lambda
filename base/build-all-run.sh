@@ -12,5 +12,5 @@ for RUNTIME in $RUNTIMES; do
 
   [ -x ./update_libs.sh ] && ./update_libs.sh
 
-  docker build --no-cache -t lambci/lambda:${RUNTIME} .
+  docker build --no-cache -t mlupin/docker-lambda:${RUNTIME} .
 done

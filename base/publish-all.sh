@@ -16,10 +16,10 @@ docker push lambci/lambda-base-2
 
 for RUNTIME in $RUNTIMES; do
   echo $RUNTIME
-  docker tag lambci/lambda:${RUNTIME} lambci/lambda:${PUBLISH_DATE}-${RUNTIME}
-  docker push lambci/lambda:${RUNTIME}
-  docker push lambci/lambda:${PUBLISH_DATE}-${RUNTIME}
-  docker rmi lambci/lambda:${PUBLISH_DATE}-${RUNTIME}
+  docker tag mlupin/docker-lambda:${RUNTIME} mlupin/docker-lambda:${PUBLISH_DATE}-${RUNTIME}
+  docker push mlupin/docker-lambda:${RUNTIME}
+  docker push mlupin/docker-lambda:${PUBLISH_DATE}-${RUNTIME}
+  docker rmi mlupin/docker-lambda:${PUBLISH_DATE}-${RUNTIME}
 done
 
 docker push lambci/lambda-base:build
@@ -27,8 +27,8 @@ docker push lambci/lambda-base-2:build
 
 for RUNTIME in $RUNTIMES; do
   echo build-${RUNTIME}
-  docker tag lambci/lambda:build-${RUNTIME} lambci/lambda:${PUBLISH_DATE}-build-${RUNTIME}
-  docker push lambci/lambda:build-${RUNTIME}
-  docker push lambci/lambda:${PUBLISH_DATE}-build-${RUNTIME}
-  docker rmi lambci/lambda:${PUBLISH_DATE}-build-${RUNTIME}
+  docker tag mlupin/docker-lambda:build-${RUNTIME} mlupin/docker-lambda:${PUBLISH_DATE}-build-${RUNTIME}
+  docker push mlupin/docker-lambda:build-${RUNTIME}
+  docker push mlupin/docker-lambda:${PUBLISH_DATE}-build-${RUNTIME}
+  docker rmi mlupin/docker-lambda:${PUBLISH_DATE}-build-${RUNTIME}
 done

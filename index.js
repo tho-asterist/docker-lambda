@@ -15,19 +15,19 @@ var ENV_VARS = [
   'AWS_LAMBDA_EVENT_BODY',
   'DOCKER_LAMBDA_USE_STDIN',
 ]
-var ENV_ARGS = [].concat.apply([], ENV_VARS.map(function(x) { return ['-e', x] }))
+var ENV_ARGS = [].concat.apply([], ENV_VARS.map(function (x) { return ['-e', x] }))
 
 // Will spawn `docker run` synchronously and return stdout
 module.exports = function runSync(options) {
   options = options || {}
-  var dockerImage = options.dockerImage || 'lambci/lambda:nodejs4.3'
+  var dockerImage = options.dockerImage || 'mlupin/docker-lambda:nodejs4.3'
   var handler = options.handler || 'index.handler'
   var event = options.event || {}
   var taskDir = options.taskDir == null ? process.cwd() : options.taskDir
   var cleanUp = options.cleanUp == null ? true : options.cleanUp
   var addEnvVars = options.addEnvVars || false
   var dockerArgs = options.dockerArgs || []
-  var spawnOptions = options.spawnOptions || {encoding: 'utf8'}
+  var spawnOptions = options.spawnOptions || { encoding: 'utf8' }
   var returnSpawnResult = options.returnSpawnResult || false
 
   var args = ['run']

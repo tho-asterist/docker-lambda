@@ -1,13 +1,13 @@
-FROM lambci/lambda:python3.8
+FROM mlupin/docker-lambda:python3.8
 
 FROM lambci/lambda-base-2:build
 
 ENV PATH=/var/lang/bin:$PATH \
-    LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
-    AWS_EXECUTION_ENV=AWS_Lambda_python3.8 \
-    PKG_CONFIG_PATH=/var/lang/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig \
-    PIPX_BIN_DIR=/var/lang/bin \
-    PIPX_HOME=/var/lang/pipx
+  LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
+  AWS_EXECUTION_ENV=AWS_Lambda_python3.8 \
+  PKG_CONFIG_PATH=/var/lang/lib/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig \
+  PIPX_BIN_DIR=/var/lang/bin \
+  PIPX_HOME=/var/lang/pipx
 
 COPY --from=0 /var/runtime /var/runtime
 COPY --from=0 /var/lang /var/lang

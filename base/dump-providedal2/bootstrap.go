@@ -1,4 +1,4 @@
-// docker run --rm -v "$PWD":/go/src/handler lambci/lambda:build-go1.x sh -c \
+// docker run --rm -v "$PWD":/go/src/handler mlupin/docker-lambda:build-go1.x sh -c \
 //   'go mod download && go build -tags lambda.norpc -ldflags="-s -w" bootstrap.go' && \
 //   zip bootstrap.zip bootstrap
 

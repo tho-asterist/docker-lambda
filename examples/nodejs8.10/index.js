@@ -1,7 +1,7 @@
 // Just a test lambda, run with:
-// docker run --rm -v "$PWD":/var/task lambci/lambda:nodejs8.10
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs8.10
 
-exports.handler = async(event, context) => {
+exports.handler = async (event, context) => {
   console.log(process.execPath)
   console.log(process.execArgv)
   console.log(process.argv)

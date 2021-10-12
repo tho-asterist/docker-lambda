@@ -1,10 +1,10 @@
-﻿FROM lambci/lambda:java8.al2
+﻿FROM mlupin/docker-lambda:java8.al2
 
 FROM lambci/lambda-base-2:build
 
 ENV PATH=/var/lang/bin:$PATH \
-    LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
-    AWS_EXECUTION_ENV=AWS_Lambda_rapid
+  LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
+  AWS_EXECUTION_ENV=AWS_Lambda_rapid
 
 COPY --from=0 /var/runtime /var/runtime
 COPY --from=0 /var/lang /var/lang

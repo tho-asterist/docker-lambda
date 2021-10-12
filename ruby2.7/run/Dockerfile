@@ -1,9 +1,9 @@
 FROM lambci/lambda-base
 
-RUN curl https://lambci.s3.amazonaws.com/fs/ruby2.7.tgz | tar -zx -C /opt
+RUN curl https://docker-lambda.s3.amazonaws.com/fs/ruby2.7.tgz | tar -zx -C /opt
 
 
-FROM lambci/lambda:provided
+FROM mlupin/docker-lambda:provided
 
 
 FROM lambci/lambda-base-2

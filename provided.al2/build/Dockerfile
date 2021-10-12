@@ -1,4 +1,4 @@
-﻿FROM lambci/lambda:provided.al2
+﻿FROM mlupin/docker-lambda:provided.al2
 
 FROM lambci/lambda-base-2:build
 

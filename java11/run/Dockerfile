@@ -1,9 +1,9 @@
 FROM lambci/lambda-base
 
-RUN curl https://lambci.s3.amazonaws.com/fs/java11.tgz | tar -zx -C /opt
+RUN curl https://docker-lambda.s3.amazonaws.com/fs/java11.tgz | tar -zx -C /opt
 
 
-FROM lambci/lambda:provided
+FROM mlupin/docker-lambda:provided
 
 
 FROM lambci/lambda-base-2
@@ -19,4 +19,3 @@ COPY --from=1 /var/runtime/init /var/rapid/init
 USER sbx_user1051
 
 ENTRYPOINT ["/var/rapid/init", "--bootstrap", "/var/runtime/bootstrap", "--enable-msg-logs"]
-

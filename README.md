@@ -46,7 +46,7 @@ handler and the second for the event, ie:
 docker run --rm \
   -v <code_dir>:/var/task:ro,delegated \
   [-v <layer_dir>:/opt:ro,delegated] \
-  lambci/lambda:<runtime> \
+  mlupin/docker-lambda:<runtime> \
   [<handler>] [<event>]
 ```
 
@@ -69,7 +69,7 @@ docker run --rm [-d] \
   -p 9001:9001 \
   -v <code_dir>:/var/task:ro,delegated \
   [-v <layer_dir>:/opt:ro,delegated] \
-  lambci/lambda:<runtime> \
+  mlupin/docker-lambda:<runtime> \
   [<handler>]
 ```
 
@@ -117,7 +117,7 @@ To enable this, pass `-e DOCKER_LAMBDA_WATCH=1` to `docker run`:
 docker run --rm \
   -e DOCKER_LAMBDA_WATCH=1 -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 \
   -v "$PWD":/var/task:ro,delegated \
-  lambci/lambda:java11 handler
+  mlupin/docker-lambda:java11 handler
 ```
 
 Then when you make changes to any file in the mounted directory, you'll see:
@@ -140,7 +140,7 @@ need to run watch mode like this instead:
 docker run --restart on-failure \
   -e DOCKER_LAMBDA_WATCH=1 -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 \
   -v "$PWD":/var/task:ro,delegated \
-  lambci/lambda:java8 handler
+  mlupin/docker-lambda:java8 handler
 ```
 
 When you make changes to any file in the mounted directory, you'll see:
@@ -159,7 +159,7 @@ If none of the above strategies work for you, you can use a file-watching utilit
 nodemon -w ./ -e '' -s SIGINT -x docker -- run --rm \
   -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 \
   -v "$PWD":/var/task:ro,delegated \
-  lambci/lambda:go1.x handler
+  mlupin/docker-lambda:go1.x handler
 ```
 
 ### Building Lambda functions
@@ -170,7 +170,7 @@ intended for building and packaging your Lambda functions. You can run your buil
 all from within the image.
 
 ```sh
-docker run [--rm] -v <code_dir>:/var/task [-v <layer_dir>:/opt] lambci/lambda:build-<runtime> <build-cmd>
+docker run [--rm] -v <code_dir>:/var/task [-v <layer_dir>:/opt] mlupin/docker-lambda:build-<runtime> <build-cmd>
 ```
 
 You can also use [yumda](https://github.com/lambci/yumda) to install precompiled native dependencies using `yum install`.
@@ -179,41 +179,41 @@ You can also use [yumda](https://github.com/lambci/yumda) to install precompiled
 
 ```sh
 # Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:nodejs12.x index.handler
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
 
 # Using a different file and handler, with a custom event
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:nodejs12.x app.myHandler '{"some": "event"}'
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x app.myHandler '{"some": "event"}'
 
 # Test a `lambda_handler` function in `lambda_function.py` with an empty event on Python 3.8
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:python3.8 lambda_function.lambda_handler
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:python3.8 lambda_function.lambda_handler
 
 # Similarly with Ruby 2.7
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:ruby2.7 lambda_function.lambda_handler
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:ruby2.7 lambda_function.lambda_handler
 
 # Test on Go 1.x with a compiled handler named my_handler and a custom event
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:go1.x my_handler '{"some": "event"}'
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:go1.x my_handler '{"some": "event"}'
 
 # Test a function from the current directory on Java 11
 # The directory must be laid out in the same way the Lambda zip file is,
 # with top-level package source directories and a `lib` directory for third-party jars
 # https://docs.aws.amazon.com/lambda/latest/dg/java-package.html
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:java11 org.myorg.MyHandler
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:java11 org.myorg.MyHandler
 
 # Test on .NET Core 3.1 given a test.dll assembly in the current directory,
 # a class named Function with a FunctionHandler method, and a custom event
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
 
 # Test with a provided runtime (assumes you have a `bootstrap` executable in the current directory)
-docker run --rm -v "$PWD":/var/task:ro,delegated lambci/lambda:provided handler '{"some": "event"}'
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:provided handler '{"some": "event"}'
 
 # Test with layers (assumes your function code is in `./fn` and your layers in `./layer`)
-docker run --rm -v "$PWD"/fn:/var/task:ro,delegated -v "$PWD"/layer:/opt:ro,delegated lambci/lambda:nodejs12.x
+docker run --rm -v "$PWD"/fn:/var/task:ro,delegated -v "$PWD"/layer:/opt:ro,delegated mlupin/docker-lambda:nodejs12.x
 
 # Run custom commands
-docker run --rm --entrypoint node lambci/lambda:nodejs12.x -v
+docker run --rm --entrypoint node mlupin/docker-lambda:nodejs12.x -v
 
 # For large events you can pipe them into stdin if you set DOCKER_LAMBDA_USE_STDIN
-echo '{"some": "event"}' | docker run --rm -v "$PWD":/var/task:ro,delegated -i -e DOCKER_LAMBDA_USE_STDIN=1 lambci/lambda:nodejs12.x
+echo '{"some": "event"}' | docker run --rm -v "$PWD":/var/task:ro,delegated -i -e DOCKER_LAMBDA_USE_STDIN=1 mlupin/docker-lambda:nodejs12.x
 ```
 
 You can see more examples of how to build docker images and run different
@@ -225,23 +225,23 @@ To use the build images, for compilation, deployment, etc:
 
 ```sh
 # To compile native deps in node_modules
-docker run --rm -v "$PWD":/var/task lambci/lambda:build-nodejs12.x npm rebuild --build-from-source
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-nodejs12.x npm rebuild --build-from-source
 
 # To install defined poetry dependencies
-docker run --rm -v "$PWD":/var/task lambci/lambda:build-python3.8 poetry install
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-python3.8 poetry install
 
 # To resolve dependencies on go1.x (working directory is /go/src/handler)
-docker run --rm -v "$PWD":/go/src/handler lambci/lambda:build-go1.x go mod download
+docker run --rm -v "$PWD":/go/src/handler mlupin/docker-lambda:build-go1.x go mod download
 
 # For .NET Core, this will publish the compiled code to `./pub`,
 # which you can then use to run with `-v "$PWD"/pub:/var/task`
-docker run --rm -v "$PWD":/var/task lambci/lambda:build-dotnetcore3.1 dotnet publish -c Release -o pub
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-dotnetcore3.1 dotnet publish -c Release -o pub
 
 # Run custom commands on a build container
-docker run --rm lambci/lambda:build-python3.8 aws --version
+docker run --rm mlupin/docker-lambda:build-python3.8 aws --version
 
 # To run an interactive session on a build container
-docker run -it lambci/lambda:build-python3.8 bash
+docker run -it mlupin/docker-lambda:build-python3.8 bash
 ```
 
 ## Using a Dockerfile to build
@@ -249,7 +249,7 @@ docker run -it lambci/lambda:build-python3.8 bash
 Create your own Docker image to build and deploy:
 
 ```dockerfile
-FROM lambci/lambda:build-nodejs12.x
+FROM mlupin/docker-lambda:build-nodejs12.x
 
 ENV AWS_DEFAULT_REGION us-east-1
 
@@ -277,10 +277,10 @@ Using the Node.js module (`npm install docker-lambda`) – for example in tests:
 var dockerLambda = require('docker-lambda')
 
 // Spawns synchronously, uses current dir – will throw if it fails
-var lambdaCallbackResult = dockerLambda({event: {some: 'event'}, dockerImage: 'lambci/lambda:nodejs12.x'})
+var lambdaCallbackResult = dockerLambda({event: {some: 'event'}, dockerImage: 'mlupin/docker-lambda:nodejs12.x'})
 
 // Manually specify directory and custom args
-lambdaCallbackResult = dockerLambda({taskDir: __dirname, dockerArgs: ['-m', '1.5G'], dockerImage: 'lambci/lambda:nodejs12.x'})
+lambdaCallbackResult = dockerLambda({taskDir: __dirname, dockerArgs: ['-m', '1.5G'], dockerImage: 'mlupin/docker-lambda:nodejs12.x'})
 ```
 
 Options to pass to `dockerLambda()`:
@@ -350,14 +350,14 @@ with the following keys:
 You can verify/inspect an image using `docker trust inspect`:
 
 ```sh
-$ docker trust inspect --pretty lambci/lambda:provided
+$ docker trust inspect --pretty mlupin/docker-lambda:provided
 
-Signatures for lambci/lambda:provided
+Signatures for mlupin/docker-lambda:provided
 
 SIGNED TAG          DIGEST                                                             SIGNERS
 provided            838c42079b5fcfd6640d486f13c1ceeb52ac661e19f9f1d240b63478e53d73f8   (Repo Admin)
 
-Administrative keys for lambci/lambda:provided
+Administrative keys for mlupin/docker-lambda:provided
 
   Repository Key:	e966126aacd4be5fb92e0160212dd007fc16a9b4366ef86d28fc7eb49f4d0809
   Root Key:	031d78bcdca4171be103da6ffb55e8ddfa9bd113e0ec481ade78d897d9e65c0e
@@ -397,7 +397,7 @@ Yum packages installed on build images:
   - `docker` (Docker in Docker!)
   - `clang`
   - `cmake`
-  
+
 The build image for older Amazon Linux 1 based runtimes also include:
 
   - `python27-devel`

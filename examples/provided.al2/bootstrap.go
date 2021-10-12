@@ -1,8 +1,8 @@
 // Compile with:
-// docker run --rm -v "$PWD":/go/src/handler lambci/lambda:build-go1.x sh -c 'go mod download && go build -tags lambda.norpc bootstrap.go'
+// docker run --rm -v "$PWD":/go/src/handler mlupin/docker-lambda:build-go1.x sh -c 'go mod download && go build -tags lambda.norpc bootstrap.go'
 
 // Run with:
-// docker run --rm -v "$PWD":/var/task lambci/lambda:provided.al2 handler '{"Records": []}'
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:provided.al2 handler '{"Records": []}'
 
 package main
 

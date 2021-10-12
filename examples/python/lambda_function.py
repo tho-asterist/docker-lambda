@@ -4,11 +4,11 @@ import sys
 import subprocess
 
 # Just a test lambda, run with:
-# docker run --rm -v "$PWD":/var/task lambci/lambda:python2.7
+# docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python2.7
 # OR
-# docker run --rm -v "$PWD":/var/task lambci/lambda:python3.6
+# docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python3.6
 # OR
-# docker run --rm -v "$PWD":/var/task lambci/lambda:python3.7 lambda_function.lambda_handler
+# docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python3.7 lambda_function.lambda_handler
 
 def lambda_handler(event, context):
     context.log('Hello!')

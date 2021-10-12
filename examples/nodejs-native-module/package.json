@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "docker run --rm -v \"$PWD\":/var/task lambci/lambda:build-nodejs12.x npm rebuild --build-from-source",
+    "build": "docker run --rm -v \"$PWD\":/var/task mlupin/docker-lambda:build-nodejs12.x npm rebuild --build-from-source",
     "test": "node test.js"
   },
   "dependencies": {

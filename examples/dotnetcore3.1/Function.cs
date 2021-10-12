@@ -1,8 +1,8 @@
 // Compile with:
-// docker run --rm -v "$PWD":/var/task lambci/lambda:build-dotnetcore3.1 dotnet publish -c Release -o pub
+// docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-dotnetcore3.1 dotnet publish -c Release -o pub
 
 // Run with:
-// docker run --rm -v "$PWD"/pub:/var/task lambci/lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
+// docker run --rm -v "$PWD"/pub:/var/task mlupin/docker-lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
 
 using System;
 using System.Collections;
