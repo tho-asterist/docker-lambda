@@ -26,9 +26,13 @@ build-dotnetcore31: build-dotnetcore31-x86_64 build-dotnetcore31-arm64
 
 build-java8.al2:
 	docker run --rm -v "$(realpath ./dump-java8.al2):/app" -w /app gradle:jdk8 gradle build
+	cp -a dump-java8.al2/build/distributions/app.zip bin/dump-java8.al2-x86_64.zip
+	cp -a dump-java8.al2/build/distributions/app.zip bin/dump-java8.al2-arm64.zip
 
 build-java11:
 	docker run --rm -v "$(realpath ./dump-java11):/app" -w /app gradle:jdk11 gradle build
+	cp -a dump-java11/build/distributions/app.zip bin/dump-java11-x86_64.zip
+	cp -a dump-java11/build/distributions/app.zip bin/dump-java11-arm64.zip
 
 build-provided.al2-x86_64:
 	export GO111MODULE=on && \

@@ -8,6 +8,7 @@ provider:
   region: eu-west-1
   profile: lupine
   timeout: 900
+  versionFunctions: false
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -134,7 +135,7 @@ functions:
   dump-java8al2-x86_64:
     handler: pl.lupin.lambda.DumpJava8AL2_x86_64
     package:
-      artifact: dump-java8.al2/build/distributions/app.zip
+      artifact: bin/dump-java8.al2-x86_64.zip
     runtime: java8.al2
     architecture: x86_64
     layers:
@@ -142,7 +143,7 @@ functions:
   dump-java8al2-arm64:
     handler: pl.lupin.lambda.DumpJava8AL2_arm64
     package:
-      artifact: dump-java8.al2/build/distributions/app.zip
+      artifact: bin/dump-java8.al2-arm64.zip
     runtime: java8.al2
     architecture: arm64
     layers:
@@ -151,7 +152,7 @@ functions:
   dump-java11-x86_64:
     handler: pl.lupin.lambda.DumpJava11_x86_64
     package:
-      artifact: dump-java11/build/distributions/app.zip
+      artifact: bin/dump-java11-x86_64.zip
     runtime: java11
     architecture: x86_64
     layers:
@@ -159,7 +160,7 @@ functions:
   dump-java11-arm64:
     handler: pl.lupin.lambda.DumpJava11_arm64
     package:
-      artifact: dump-java11/build/distributions/app.zip
+      artifact: bin/dump-java11-arm64.zip
     runtime: java11
     architecture: arm64
     layers:
