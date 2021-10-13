@@ -1,14 +1,14 @@
-FROM mlupin/docker-lambda:base-x86_64
+FROM mlupin/docker-lambda:base-arm64
 
-RUN curl https://docker-lambda.s3.amazonaws.com/fs/python3.9-x86_64.tgz | tar -zx -C /opt
+RUN curl https://docker-lambda.s3.amazonaws.com/fs/python3.9-arm64.tgz | tar -zx -C /opt
 
-FROM mlupin/docker-lambda:provided.al2-x86_64
-FROM mlupin/docker-lambda:base-x86_64
+FROM mlupin/docker-lambda:provided.al2-arm64
+FROM mlupin/docker-lambda:base-arm64
 
 ENV PATH=/var/lang/bin:$PATH \
     LD_LIBRARY_PATH=/var/lang/lib:$LD_LIBRARY_PATH \
     AWS_EXECUTION_ENV=AWS_Lambda_python3.9 \
-    AWS_EXECUTION_ARCH=x86_64
+    AWS_EXECUTION_ARCH=arm64
 
 COPY --from=0 /opt/* /var/
 
