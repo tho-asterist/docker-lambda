@@ -30,7 +30,25 @@ build-java8.al2:
 build-java11:
 	docker run --rm -v "$(realpath ./dump-java11):/app" -w /app gradle:jdk11 gradle build
 
-build: build-dotnetcore31 build-java8.al2 build-java11
+build-provided.al2-x86_64:
+	export GO111MODULE=on && \
+	cd dump-provided.al2/x86_64/ && go mod download
+	cd dump-provided.al2/x86_64/ && env GOARCH=amd64 GOOS=linux go build -tags lambda.norpc -ldflags="-s -w" main.go
+	mkdir -p bin/DumpProvidedAL2-x86_64
+	mv dump-provided.al2/x86_64/main bin/DumpProvidedAL2-x86_64/bootstrap
+	cd bin/DumpProvidedAL2-x86_64/ && zip -r ../DumpProvidedAL2-x86_64.zip *
+
+build-provided.al2-arm64:
+	export GO111MODULE=on && \
+	cd dump-provided.al2/arm64/ && go mod download
+	cd dump-provided.al2/arm64/ && env GOARCH=arm64 GOOS=linux go build -tags lambda.norpc -ldflags="-s -w" main.go
+	mkdir -p bin/DumpProvidedAL2-arm64
+	mv dump-provided.al2/arm64/main bin/DumpProvidedAL2-arm64/bootstrap
+	cd bin/DumpProvidedAL2-arm64/ && zip -r ../DumpProvidedAL2-arm64.zip *
+
+build-provided.al2: build-provided.al2-x86_64 build-provided.al2-arm64
+
+build: build-dotnetcore31 build-java8.al2 build-java11 build-provided.al2
 
 clean:
 	rm -rf ./bin ./vendor

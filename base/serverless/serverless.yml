@@ -32,12 +32,20 @@ layers:
 functions:
   dump-base-2-x86_64:
     handler: dump-base-2/handler.handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-base-2/**"
     runtime: nodejs12.x
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
   dump-base-2-arm64:
     handler: dump-base-2/handler.handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-base-2/**"
     runtime: nodejs12.x
     architecture: arm64
     layers:
@@ -45,12 +53,20 @@ functions:
 
   dump-python38-x86_64:
     handler: dump-python38/handler.lambda_handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-python38/**"
     runtime: python3.8
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
   dump-python38-arm64:
     handler: dump-python38/handler.lambda_handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-python38/**"
     runtime: python3.8
     architecture: arm64
     layers:
@@ -58,12 +74,20 @@ functions:
 
   dump-python39-x86_64:
     handler: dump-python39/handler.lambda_handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-python39/**"
     runtime: python3.9
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
   dump-python39-arm64:
     handler: dump-python39/handler.lambda_handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-python39/**"
     runtime: python3.9
     architecture: arm64
     layers:
@@ -71,12 +95,20 @@ functions:
 
   dump-ruby27-x86_64:
     handler: dump-ruby27/handler.lambda_handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-ruby27/**"
     runtime: ruby2.7
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
   dump-ruby27-arm64:
     handler: dump-ruby27/handler.lambda_handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-ruby27/**"
     runtime: ruby2.7
     architecture: arm64
     layers:
@@ -129,6 +161,23 @@ functions:
     package:
       artifact: dump-java11/build/distributions/app.zip
     runtime: java11
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
+  dump-providedal2-x86_64:
+    handler: bin/DumpProvidedAL2-x86_64
+    package:
+      artifact: bin/DumpProvidedAL2-x86_64.zip
+    runtime: provided.al2
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-providedal2-arm64:
+    handler: bin/DumpProvidedAL2-arm64
+    package:
+      artifact: bin/DumpProvidedAL2-arm64.zip
+    runtime: provided.al2
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }

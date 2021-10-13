@@ -20,9 +20,9 @@ import (
 )
 
 func handleRequest(ctx context.Context, event interface{}) (*s3.PutObjectResponse, error) {
-	filename := "provided.al2.tgz"
+	filename := "provided.al2-x86_64.tgz"
 
-	runShell("tar -cpzf /tmp/" + filename + " --numeric-owner --ignore-failed-read /var/runtime /var/lang")
+	runShell("touch /tmp/" + filename + " && tar -cpzf /tmp/" + filename + " --numeric-owner --ignore-failed-read /var/runtime /var/lang")
 
 	fmt.Println("Zipping done! Uploading...")
 
@@ -30,6 +30,7 @@ func handleRequest(ctx context.Context, event interface{}) (*s3.PutObjectRespons
 	if err != nil {
 		log.Fatal(err)
 	}
+	cfg.Region = "eu-central-1"
 
 	file, err := os.Open("/tmp/" + filename)
 	if err != nil {
@@ -39,7 +40,7 @@ func handleRequest(ctx context.Context, event interface{}) (*s3.PutObjectRespons
 	resp, err := s3.New(cfg).PutObjectRequest(&s3.PutObjectInput{
 		ACL:    s3.ObjectCannedACLPublicRead,
 		Body:   file,
-		Bucket: aws.String("lambci"),
+		Bucket: aws.String("docker-lambda"),
 		Key:    aws.String("fs/" + filename),
 	}).Send(context.Background())
 	if err != nil {
