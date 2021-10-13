@@ -1,12 +1,12 @@
-FROM lambci/lambda-base-2
+FROM mlupin/lambda-base-2:x86_64
 
-FROM amazonlinux:2
+FROM amd64/amazonlinux:2
 
 COPY --from=0 / /opt/
 
 RUN yum --installroot=/opt install -y yum yum-plugin-ovl yum-plugin-priorities
 
-FROM lambci/lambda-base-2
+FROM mlupin/lambda-base-2:x86_64
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin \
   PIPX_BIN_DIR=/usr/local/bin \
