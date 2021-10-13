@@ -1,4 +1,4 @@
-FROM mlupin/docker-lambda:base-x86_64
+FROM amd64/amazonlinux:2
 
 RUN curl https://docker-lambda.s3.amazonaws.com/fs/python3.9-x86_64.tgz | tar -zx -C /opt
 
