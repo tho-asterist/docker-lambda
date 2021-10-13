@@ -4,7 +4,9 @@ using System.IO;
 using System.Threading.Tasks;
 
 using Amazon.Lambda.Core;
+using Amazon;
 using Amazon.S3;
+using Amazon.S3.Model;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
@@ -12,15 +14,20 @@ namespace dump_dotnetcore31
 {
     public class Function
     {
-        /// <summary>
-        /// Lambda function to dump the container directories /var/lang 
-        /// and /var/runtime and upload the resulting archive to S3
-        /// </summary>
-        /// <returns></returns>
-        public async Task<string> FunctionHandler(object invokeEvent, ILambdaContext context)
+        public async Task<string> FunctionHandler_x86_64(object invokeEvent, ILambdaContext context)
         {
-            string filename = "dotnetcore3.1.tgz";
-            string cmd = $"tar -cpzf /tmp/{filename} --numeric-owner --ignore-failed-read /var/runtime /var/lang";
+            return await FunctionHandler(invokeEvent, context, "x86_64");
+        }
+
+        public async Task<string> FunctionHandler_arm64(object invokeEvent, ILambdaContext context)
+        {
+            return await FunctionHandler(invokeEvent, context, "arm64");
+        }
+
+        public async Task<string> FunctionHandler(object invokeEvent, ILambdaContext context, string arch)
+        {
+            string filename = $"dotnetcore3.1-{arch}.tgz";
+            string cmd = $"touch /tmp/{filename} && tar -cpzf /tmp/{filename} --numeric-owner --ignore-failed-read /var/runtime /var/lang";
 
             Console.WriteLine($"invokeEvent: {invokeEvent}");
             Console.WriteLine($"context.RemainingTime: {context.RemainingTime}");
@@ -43,10 +50,10 @@ namespace dump_dotnetcore31
 
             Console.WriteLine("Zipping done! Uploading...");
 
-            var s3Client = new AmazonS3Client();
+            var s3Client = new AmazonS3Client(RegionEndpoint.EUCentral1);
             var response = await s3Client.PutObjectAsync(new Amazon.S3.Model.PutObjectRequest
             {
-                BucketName = "lambci",
+                BucketName = "docker-lambda",
                 Key = $"fs/{filename}",
                 FilePath = $"/tmp/{filename}",
                 CannedACL = S3CannedACL.PublicRead,

@@ -19,7 +19,7 @@ def lambda_handler(event, context, arch):
     if 'cmd' in event:
         return print(subprocess.check_output(['sh', '-c', event['cmd']]).decode('utf-8'))
 
-    filename = f'python3.9-{arch}.tgz'
+    filename = f'python3.8-{arch}.tgz'
 
     subprocess.call(['touch', f'/tmp/{filename}'])
 

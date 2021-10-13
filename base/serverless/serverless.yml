@@ -1,10 +1,11 @@
 service: docker-lambda-dump
 
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 provider:
   name: aws
   lambdaHashingVersion: 20201221
+  region: eu-west-1
   profile: lupine
   timeout: 900
   iamRoleStatements:
@@ -14,7 +15,13 @@ provider:
       Resource:
         - "*"
 
+package:
+  individually: true
+
 layers:
+  # Generate those using the script in the `tar-find-layer` directory.
+  # Use two separate machines (x86_64 and arm64) for optimal perfomance,
+  # or use Docker with qemu and emulate one of the archs on your machine.
   TarX86:
     package:
       artifact: layer-tar-x86_64.zip
@@ -36,15 +43,58 @@ functions:
     layers:
       - { Ref: TarARMLambdaLayer }
 
+  dump-python38-x86_64:
+    handler: dump-python38/handler.lambda_handler_x86_64
+    runtime: python3.8
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-python38-arm64:
+    handler: dump-python38/handler.lambda_handler_arm64
+    runtime: python3.8
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
   dump-python39-x86_64:
-    handler: dump-python39.handler.lambda_handler_x86_64
+    handler: dump-python39/handler.lambda_handler_x86_64
     runtime: python3.9
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
   dump-python39-arm64:
-    handler: dump-python39.handler.lambda_handler_arm64
+    handler: dump-python39/handler.lambda_handler_arm64
     runtime: python3.9
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
+  dump-ruby27-x86_64:
+    handler: dump-ruby27/handler.lambda_handler_x86_64
+    runtime: ruby2.7
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-ruby27-arm64:
+    handler: dump-ruby27/handler.lambda_handler_arm64
+    runtime: ruby2.7
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
+  dump-dotnetcore31-x86_64:
+    handler: dump_dotnetcore31::dump_dotnetcore31.Function::FunctionHandler_x86_64
+    package:
+      artifact: bin/Release/dump-dotnetcore31/handler-x86_64.zip
+    runtime: dotnetcore3.1
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-dotnetcore31-arm64:
+    handler: dump_dotnetcore31::dump_dotnetcore31.Function::FunctionHandler_arm64
+    package:
+      artifact: bin/Release/dump-dotnetcore31/handler-arm64.zip
+    runtime: dotnetcore3.1
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }

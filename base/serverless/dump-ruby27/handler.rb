@@ -1,17 +1,18 @@
 require 'json'
 require 'aws-sdk-s3'
 
-S3_CLIENT = Aws::S3::Client.new({region: "us-east-1"})
+S3_CLIENT = Aws::S3::Client.new({region: "eu-central-1"})
 
-def lambda_handler(event:, context:)
-  filename = 'ruby2.7.tgz'
+def lambda_handler(event, context, arch)
+  filename = "ruby2.7-#{arch}.tgz"
 
+  puts `touch /tmp/#{filename}`
   puts `tar -cpzf /tmp/#{filename} --numeric-owner --ignore-failed-read /var/runtime /var/lang /var/rapid`
 
   File.open("/tmp/#{filename}", 'rb') do |file|
     S3_CLIENT.put_object({
       body: file,
-      bucket: 'lambci',
+      bucket: 'docker-lambda',
       key: "fs/#{filename}",
       acl: 'public-read',
     })
@@ -27,4 +28,13 @@ def lambda_handler(event:, context:)
   print JSON.pretty_generate(info)
 
   return info
+end
+
+
+def lambda_handler_x86_64(event:, context:)
+  return lambda_handler event, context, "x86_64"
+end
+
+def lambda_handler_arm64(event:, context:)
+  return lambda_handler event, context, "arm64"
 end

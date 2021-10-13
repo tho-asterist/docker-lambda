@@ -9,19 +9,26 @@ from boto3.s3.transfer import S3Transfer
 
 TRANSFER = S3Transfer(boto3.client('s3'))
 
+def lambda_handler_arm64(event, context):
+    return lambda_handler(event, context, "arm64")
 
-def lambda_handler(event, context):
+def lambda_handler_x86_64(event, context):
+    return lambda_handler(event, context, "x86_64")
+
+def lambda_handler(event, context, arch):
     if 'cmd' in event:
         return print(subprocess.check_output(['sh', '-c', event['cmd']]).decode('utf-8'))
 
-    filename = 'python3.8.tgz'
+    filename = f'python3.9-{arch}.tgz'
+
+    subprocess.call(['touch', f'/tmp/{filename}'])
 
     subprocess.call(['sh', '-c', f'tar -cpzf /tmp/{filename} --numeric-owner --ignore-failed-read ' +
                      '/var/runtime /var/lang /var/rapid'])
 
     print('Zipping done! Uploading...')
 
-    TRANSFER.upload_file(f'/tmp/{filename}', 'lambci',
+    TRANSFER.upload_file(f'/tmp/{filename}', 'docker-lambda',
                          f'fs/{filename}', extra_args={'ACL': 'public-read'})
 
     print('Uploading done!')
