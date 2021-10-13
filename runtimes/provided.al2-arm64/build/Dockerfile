@@ -1,6 +1,6 @@
-﻿FROM mlupin/docker-lambda:provided.al2
+﻿FROM mlupin/docker-lambda:provided.al2-arm64
 
-FROM lambci/lambda-base-2:build
+FROM mlupin/docker-lambda:build-arm64
 
 COPY --from=0 /var/runtime /var/runtime
 COPY --from=0 /var/lang /var/lang
