@@ -24,5 +24,3 @@ task buildZip(type: Zip) {
 }
 
 build.dependsOn buildZip
-
-// docker run --rm -v "$PWD":/app -w /app gradle:jdk11 gradle build

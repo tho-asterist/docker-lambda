@@ -115,3 +115,20 @@ functions:
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }
+
+  dump-java11-x86_64:
+    handler: pl.lupin.lambda.DumpJava11_x86_64
+    package:
+      artifact: dump-java11/build/distributions/app.zip
+    runtime: java11
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-java11-arm64:
+    handler: pl.lupin.lambda.DumpJava11_arm64
+    package:
+      artifact: dump-java11/build/distributions/app.zip
+    runtime: java11
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
