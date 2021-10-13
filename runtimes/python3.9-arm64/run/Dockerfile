@@ -1,5 +1,7 @@
 FROM arm64v8/amazonlinux:2
 
+RUN yum install -y tar
+
 RUN curl https://docker-lambda.s3.amazonaws.com/fs/python3.9-arm64.tgz | tar -zx -C /opt
 
 FROM mlupin/docker-lambda:provided.al2-arm64
