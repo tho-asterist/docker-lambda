@@ -182,3 +182,45 @@ functions:
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }
+
+  dump-nodejs12x-x86_64:
+    handler: dump-nodejs12x/handler.handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs12x/**"
+    runtime: nodejs12.x
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-nodejs12x-arm64:
+    handler: dump-nodejs12x/handler.handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs12x/**"
+    runtime: nodejs12.x
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
+  dump-nodejs14x-x86_64:
+    handler: dump-nodejs14x/handler.handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs14x/**"
+    runtime: nodejs14.x
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-nodejs14x-arm64:
+    handler: dump-nodejs14x/handler.handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs14x/**"
+    runtime: nodejs14.x
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }

@@ -1,4 +1,4 @@
-.PHONY: clean build deploy
+.PHONY: clean build deploy dump-all
 
 build-dotnetcore31-x86_64:
 	mkdir -p ./bin
@@ -59,3 +59,6 @@ clean:
 
 deploy: clean build
 	sls deploy --verbose
+
+dump-all:
+	./dump-all.sh
