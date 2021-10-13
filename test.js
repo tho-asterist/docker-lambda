@@ -24,7 +24,7 @@ captured.args.should.eql([
   '-v',
   __dirname + ':/var/task',
   '--rm',
-  'mlupin/docker-lambda:nodejs4.3',
+  'mlupin/docker-lambda:nodejs14x',
   'index.handler',
   '{}',
 ])
@@ -66,7 +66,7 @@ captured.args.should.eql([
   'AWS_LAMBDA_EVENT_BODY',
   '-e',
   'DOCKER_LAMBDA_USE_STDIN',
-  'mlupin/docker-lambda:nodejs4.3',
+  'mlupin/docker-lambda:nodejs14x',
   'index.handler',
   '{}',
 ])
