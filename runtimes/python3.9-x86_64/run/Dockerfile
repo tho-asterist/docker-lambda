@@ -1,6 +1,6 @@
 FROM amd64/amazonlinux:2
 
-RUN yum install -y tar
+RUN yum install -y tar gzip
 
 RUN curl https://docker-lambda.s3.amazonaws.com/fs/python3.9-x86_64.tgz | tar -zx -C /opt
 
