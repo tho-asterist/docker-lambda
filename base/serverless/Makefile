@@ -24,6 +24,9 @@ build-dotnetcore31-arm64:
 
 build-dotnetcore31: build-dotnetcore31-x86_64 build-dotnetcore31-arm64
 
+build-java8.al2:
+	docker run --rm -v "$(realpath ./dump-java8.al2):/app" -w /app gradle:jdk8 gradle build
+
 build: build-dotnetcore31
 
 clean:

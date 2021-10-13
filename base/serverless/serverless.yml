@@ -98,3 +98,20 @@ functions:
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }
+
+  dump-java8al2-x86_64:
+    handler: pl.lupin.lambda.DumpJava8AL2_x86_64
+    package:
+      artifact: dump-java8.al2/build/distributions/app.zip
+    runtime: java8.al2
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-java8al2-arm64:
+    handler: pl.lupin.lambda.DumpJava8AL2_arm64
+    package:
+      artifact: dump-java8.al2/build/distributions/app.zip
+    runtime: java8.al2
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
