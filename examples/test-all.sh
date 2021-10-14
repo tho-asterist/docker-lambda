@@ -18,8 +18,8 @@ docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python3.8 lambda_functi
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python3.9 lambda_function.lambda_handler
 
 cd ${EXAMPLES_DIR}/python
-docker run --rm -it mlupin/docker-lambda:build-python3.8 pip install marisa-trie
-docker run --rm -it mlupin/docker-lambda:build-python3.9 pip install marisa-trie
+docker run --rm -it mlupin/docker-lambda:python3.8-build pip install marisa-trie
+docker run --rm -it mlupin/docker-lambda:python3.9-build pip install marisa-trie
 
 cd ${EXAMPLES_DIR}/ruby
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:ruby2.7 lambda_function.lambda_handler
@@ -34,5 +34,5 @@ docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:dotnetcore3.1-build dot
 docker run --rm -v "$PWD"/pub:/var/task mlupin/docker-lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
 
 cd ${EXAMPLES_DIR}/provided.al2
-docker run --rm -v "$PWD":/go -w /go golang:1 sh -c 'go mod download && go build -tags lambda.norpc bootstrap.go'
+docker run --rm -v "$PWD":/go -w /go golang:1 sh -c 'unset GOPATH && go mod download && go build -tags lambda.norpc bootstrap.go'
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:provided.al2 handler '{"Records": []}'
