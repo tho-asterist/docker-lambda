@@ -5,7 +5,7 @@ environment almost identically – including installed software and libraries,
 file structure and permissions, environment variables, context objects and
 behaviors – even the user and running process are the same.
 
-<img src="https://raw.githubusercontent.com/mlupin/docker-lambda/master/examples/terminal.png" width="969" alt="Example usage with Python3.9-x86_64 runtime">
+<img src="https://raw.githubusercontent.com/mlupine/docker-lambda/master/examples/terminal.png" width="969" alt="Example usage with Python3.9-x86_64 runtime">
 
 This is a partially rewritten and maintained fork of the original [LambCI](https://github.com/lambci/docker-lambda) project,
 updated to include latest AWS Lambda runtimes and arm64 support. However, this fork dropped support for old, Amazon Linux 1-based
