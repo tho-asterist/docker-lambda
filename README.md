@@ -5,7 +5,11 @@ environment almost identically – including installed software and libraries,
 file structure and permissions, environment variables, context objects and
 behaviors – even the user and running process are the same.
 
-<img src="https://raw.githubusercontent.com/lambci/docker-lambda/master/examples/terminal3.png" width="969" alt="Example usage with java11 runtime">
+<img src="https://raw.githubusercontent.com/mlupin/docker-lambda/master/examples/terminal.png" width="969" alt="Example usage with Python3.9-x86_64 runtime">
+
+This is a partially rewritten and maintained fork of the original [LambCI](https://github.com/lambci/docker-lambda) project,
+updated to include latest AWS Lambda runtimes and arm64 support. However, this fork dropped support for old, Amazon Linux 1-based
+runtimes.
 
 You can use it for [running your functions](#run-examples) in the same strict Lambda environment,
 knowing that they'll exhibit the same behavior when deployed live. You can
@@ -17,15 +21,21 @@ the [AWS CLI](https://aws.amazon.com/cli/).
 
 ## Contents
 
-* [Usage](#usage)
-* [Run Examples](#run-examples)
-* [Build Examples](#build-examples)
-* [Using a Dockerfile to build](#using-a-dockerfile-to-build)
-* [Docker tags](#docker-tags)
-* [Verifying images](#verifying-images)
-* [Environment variables](#environment-variables)
-* [Build environment](#build-environment)
-* [Questions](#questions)
+- [docker-lambda](#docker-lambda)
+  - [Contents](#contents)
+  - [Usage](#usage)
+    - [Running Lambda functions](#running-lambda-functions)
+      - [Running in "stay-open" API mode](#running-in-stay-open-api-mode)
+      - [Developing in "stay-open" mode](#developing-in-stay-open-mode)
+    - [Building Lambda functions](#building-lambda-functions)
+  - [Run Examples](#run-examples)
+  - [Build Examples](#build-examples)
+  - [Using a Dockerfile to build](#using-a-dockerfile-to-build)
+  - [Node.js module](#nodejs-module)
+  - [Docker tags](#docker-tags)
+  - [Environment variables](#environment-variables)
+  - [Build environment](#build-environment)
+  - [Questions](#questions)
 
 ---
 
@@ -128,40 +138,6 @@ Handler/layer file changed, restarting bootstrap...
 
 And the next invoke will reload your handler with the latest version of your code.
 
-NOTE: This doesn't work in exactly the same way with some of the older runtimes due to the way they're loaded. Specifically: `nodejs8.10` and earlier, `python3.6` and earlier, `dotnetcore2.1` and earlier, `java8` and `go1.x`. These runtimes will instead exit with error code 2
-when they are in watch mode and files in the handler or layer are changed.
-
-That way you can use the `--restart on-failure` capabilities of `docker run` to have the container automatically restart instead.
-
-So, for `nodejs8.10`, `nodejs6.10`, `nodejs4.3`, `python3.6`, `python2.7`, `dotnetcore2.1`, `dotnetcore2.0`, `java8` and `go1.x`, you'll
-need to run watch mode like this instead:
-
-```
-docker run --restart on-failure \
-  -e DOCKER_LAMBDA_WATCH=1 -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 \
-  -v "$PWD":/var/task:ro,delegated \
-  mlupin/docker-lambda:java8 handler
-```
-
-When you make changes to any file in the mounted directory, you'll see:
-
-```
-Handler/layer file changed, restarting bootstrap...
-```
-
-And then the docker container will restart. See the [Docker documentation](https://docs.docker.com/engine/reference/commandline/run/#restart-policies---restart) for more details. Your terminal may get detached, but the container should still be running and the
-API should have restarted. You can do `docker ps` to find the container ID and then `docker attach <container_id>` to reattach if you wish.
-
-If none of the above strategies work for you, you can use a file-watching utility like [nodemon](https://nodemon.io/):
-
-```sh
-# npm install -g nodemon
-nodemon -w ./ -e '' -s SIGINT -x docker -- run --rm \
-  -e DOCKER_LAMBDA_STAY_OPEN=1 -p 9001:9001 \
-  -v "$PWD":/var/task:ro,delegated \
-  mlupin/docker-lambda:go1.x handler
-```
-
 ### Building Lambda functions
 
 The build images have a [number of extra system packages installed](#build-environment)
@@ -170,16 +146,17 @@ intended for building and packaging your Lambda functions. You can run your buil
 all from within the image.
 
 ```sh
-docker run [--rm] -v <code_dir>:/var/task [-v <layer_dir>:/opt] mlupin/docker-lambda:build-<runtime> <build-cmd>
+docker run [--rm] -v <code_dir>:/var/task [-v <layer_dir>:/opt] mlupin/docker-lambda:<runtime>-build[-<arch>] <build-cmd>
 ```
-
-You can also use [yumda](https://github.com/lambci/yumda) to install precompiled native dependencies using `yum install`.
 
 ## Run Examples
 
 ```sh
 # Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
+```sh
+# Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x, forcing x86_64 arch to be used
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-x86_64 index.handler
 
 # Using a different file and handler, with a custom event
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x app.myHandler '{"some": "event"}'
@@ -189,9 +166,6 @@ docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:python3.8 
 
 # Similarly with Ruby 2.7
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:ruby2.7 lambda_function.lambda_handler
-
-# Test on Go 1.x with a compiled handler named my_handler and a custom event
-docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:go1.x my_handler '{"some": "event"}'
 
 # Test a function from the current directory on Java 11
 # The directory must be laid out in the same way the Lambda zip file is,
@@ -204,7 +178,7 @@ docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:java11 org
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:dotnetcore3.1 test::test.Function::FunctionHandler '{"some": "event"}'
 
 # Test with a provided runtime (assumes you have a `bootstrap` executable in the current directory)
-docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:provided handler '{"some": "event"}'
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:provided.al2 handler '{"some": "event"}'
 
 # Test with layers (assumes your function code is in `./fn` and your layers in `./layer`)
 docker run --rm -v "$PWD"/fn:/var/task:ro,delegated -v "$PWD"/layer:/opt:ro,delegated mlupin/docker-lambda:nodejs12.x
@@ -225,23 +199,25 @@ To use the build images, for compilation, deployment, etc:
 
 ```sh
 # To compile native deps in node_modules
-docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-nodejs12.x npm rebuild --build-from-source
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs12.x-build npm rebuild --build-from-source
+
+# To compile native deps in node_modules for a specific architecture
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs12.x-build-x86_64 npm rebuild --build-from-source
+# or
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs12.x-build-arm64 npm rebuild --build-from-source
 
 # To install defined poetry dependencies
-docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-python3.8 poetry install
-
-# To resolve dependencies on go1.x (working directory is /go/src/handler)
-docker run --rm -v "$PWD":/go/src/handler mlupin/docker-lambda:build-go1.x go mod download
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:python3.8-build poetry install
 
 # For .NET Core, this will publish the compiled code to `./pub`,
 # which you can then use to run with `-v "$PWD"/pub:/var/task`
-docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:build-dotnetcore3.1 dotnet publish -c Release -o pub
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:dotnetcore3.1-build dotnet publish -c Release -o pub
 
 # Run custom commands on a build container
-docker run --rm mlupin/docker-lambda:build-python3.8 aws --version
+docker run --rm mlupin/docker-lambda:python3.8-build aws --version
 
 # To run an interactive session on a build container
-docker run -it mlupin/docker-lambda:build-python3.8 bash
+docker run -it mlupin/docker-lambda:python3.8-build bash
 ```
 
 ## Using a Dockerfile to build
@@ -249,7 +225,7 @@ docker run -it mlupin/docker-lambda:build-python3.8 bash
 Create your own Docker image to build and deploy:
 
 ```dockerfile
-FROM mlupin/docker-lambda:build-nodejs12.x
+FROM mlupin/docker-lambda:nodejs12.x-build
 
 ENV AWS_DEFAULT_REGION us-east-1
 
@@ -298,72 +274,50 @@ Options to pass to `dockerLambda()`:
 
 These follow the Lambda runtime names:
 
-  - `nodejs4.3`
-  - `nodejs6.10`
-  - `nodejs8.10`
-  - `nodejs10.x`
   - `nodejs12.x`
-  - `python2.7`
-  - `python3.6`
-  - `python3.7`
+  - `nodejs14.x`
   - `python3.8`
-  - `ruby2.5`
+  - `python3.9`
   - `ruby2.7`
-  - `java8`
   - `java8.al2`
   - `java11`
-  - `go1.x`
-  - `dotnetcore2.0`
-  - `dotnetcore2.1`
   - `dotnetcore3.1`
-  - `provided`
   - `provided.al2`
-  - `build-nodejs4.3`
-  - `build-nodejs6.10`
-  - `build-nodejs8.10`
-  - `build-nodejs10.x`
-  - `build-nodejs12.x`
-  - `build-python2.7`
-  - `build-python3.6`
-  - `build-python3.7`
-  - `build-python3.8`
-  - `build-ruby2.5`
-  - `build-ruby2.7`
-  - `build-java8`
-  - `build-java8.al2`
-  - `build-java11`
-  - `build-go1.x`
-  - `build-dotnetcore2.0`
-  - `build-dotnetcore2.1`
-  - `build-dotnetcore3.1`
-  - `build-provided`
-  - `build-provided.al2`
+  - `nodejs12.x-build`
+  - `nodejs14.x-build`
+  - `python3.8-build`
+  - `python3.9-build`
+  - `ruby2.7-build`
+  - `java8.al2-build`
+  - `java11-build`
+  - `dotnetcore3.1-build`
+  - `provided.al2-build`
 
-## Verifying images
-
-These images are signed using [Docker Content Trust](https://docs.docker.com/engine/security/trust/content_trust/),
-with the following keys:
-
-- Repository Key: `e966126aacd4be5fb92e0160212dd007fc16a9b4366ef86d28fc7eb49f4d0809`
-- Root Key: `031d78bcdca4171be103da6ffb55e8ddfa9bd113e0ec481ade78d897d9e65c0e`
-
-You can verify/inspect an image using `docker trust inspect`:
-
+However, each tag can also be suffixed with the architecture it's meant to be run on. Otherwise, Docker will use the
+architecture matching the host system. For example:
 ```sh
-$ docker trust inspect --pretty mlupin/docker-lambda:provided
+# This will always execute the code in an x86_64 evironment (native on x86 computers, emulated on arm64)
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-x86_64 index.handler
 
-Signatures for mlupin/docker-lambda:provided
+# This will always execute the code in an arm64 evironment (native on arm64 computers, emulated on x86)
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-arm64 index.handler
 
-SIGNED TAG          DIGEST                                                             SIGNERS
-provided            838c42079b5fcfd6640d486f13c1ceeb52ac661e19f9f1d240b63478e53d73f8   (Repo Admin)
-
-Administrative keys for mlupin/docker-lambda:provided
-
-  Repository Key:	e966126aacd4be5fb92e0160212dd007fc16a9b4366ef86d28fc7eb49f4d0809
-  Root Key:	031d78bcdca4171be103da6ffb55e8ddfa9bd113e0ec481ade78d897d9e65c0e
+# This will always execute the code in an evironment matching the host computer architecture
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
 ```
 
-(The `DIGEST` for a given tag may not match the example above, but the Repository and Root keys should match)
+You might see the following message when trying to run a container built for an architecture different than your host:
+```
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm/v8) and no specific platform was requested
+```
+
+In that case, you need to install QEMU bindings on your machine so that containers can be emulated properly. To do that,
+simply execute the following command once:
+```sh
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+Keep in mind that running emulated arm64 images on x86 machines and vice-versa is going to be painfully slow.
 
 ## Environment variables
 
@@ -374,6 +328,8 @@ Administrative keys for mlupin/docker-lambda:provided
   - `AWS_LAMBDA_FUNCTION_INVOKED_ARN`
   - `AWS_LAMBDA_FUNCTION_MEMORY_SIZE`
   - `AWS_LAMBDA_FUNCTION_TIMEOUT`
+  - `AWS_EXECUTION_ENV`
+  - `AWS_EXECUTION_ARCH`
   - `_X_AMZN_TRACE_ID`
   - `AWS_REGION` or `AWS_DEFAULT_REGION`
   - `AWS_ACCOUNT_ID`
@@ -398,27 +354,6 @@ Yum packages installed on build images:
   - `clang`
   - `cmake`
 
-The build image for older Amazon Linux 1 based runtimes also include:
-
-  - `python27-devel`
-  - `python36-devel`
-  - `ImageMagick-devel`
-  - `cairo-devel`
-  - `libssh2-devel`
-  - `libxslt-devel`
-  - `libmpc-devel`
-  - `readline-devel`
-  - `db4-devel`
-  - `libffi-devel`
-  - `expat-devel`
-  - `libicu-devel`
-  - `lua-devel`
-  - `gdbm-devel`
-  - `sqlite-devel`
-  - `pcre-devel`
-  - `libcurl-devel`
-  - `yum-plugin-ovl`
-
 ## Questions
 
 * *When should I use this?*
@@ -434,9 +369,9 @@ The build image for older Amazon Linux 1 based runtimes also include:
 
 * *Wut, how?*
 
-  By [tarring the full filesystem in Lambda, uploading that to S3](./base/dump-nodejs43.js),
-  and then [piping into Docker to create a new image from scratch](./base/create-base.sh) –
-  then [creating mock modules](./nodejs4.3/run/awslambda-mock.js) that will be
+  By [tarring the full filesystem in Lambda, uploading that to S3](./dump-fs),
+  and then [piping into Docker to create a new image from scratch](./base) –
+  then [creating mock modules](./runtimes/provided.al2-x86_64/run/init.go) that will be
   required/included in place of the actual native modules that communicate with
   the real Lambda coordinating services.  Only the native modules are mocked
   out – the actual parent JS/PY/Java runner files are left alone, so their behaviors
@@ -456,7 +391,23 @@ The build image for older Amazon Linux 1 based runtimes also include:
   Lambda too, for example – but for testing it's great to be able to reliably
   verify permissions issues, library linking issues, etc.
 
-* *What's this got to do with LambCI?*
+* *How is this fork better than the upstream LambCI repo?*
 
-  Technically nothing – it's just been incredibly useful during the building
-  and testing of LambCI.
+  Well, it's maintained, that's the most obvious difference. I've also rewritten
+  some parts of the code to make further development easier and added support for
+  runtimes that were not supported in the original repo. I've also added support
+  for arm64 Lambdas, which is a great addition for anyone who wants to migrate
+  their functions to the newer architecture but was struggling to test and build
+  ARM dependencies locally.
+
+* *Why drop Amazon Linux 1 support?*
+
+  None of those AL1-based enviornments are going to get any upgrades and the images
+  in the original repo still work just fine. There was no need to reinvent the wheel
+  and create them again.
+
+* *There is a new Lambda runtime and it's not supported by this project!*
+
+  I probably missed the fact that it was released, or I'm already working on getting
+  it implemented. In any case, feel free to create an issue and I'll do my best to add
+  it ASAP.
