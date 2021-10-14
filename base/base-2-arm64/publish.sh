@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 export PUBLISH_DATE=$(date "+%Y%m%d%H%M")
 export BASE_IMAGE="mlupin/lambda-base-2:arm64"
 export CC_IMAGE="mlupin/docker-lambda:base-arm64"
