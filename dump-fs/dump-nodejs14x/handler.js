@@ -9,7 +9,7 @@ module.exports.handler_arm64 = (async (e, c) => { return handler(e, c, "arm64") 
 handler = async (event, context, arch) => {
     const execOpts = { stdio: 'inherit', maxBuffer: 16 * 1024 * 1024 }
 
-    let filename = `nodejs14x-${arch}.tgz`
+    let filename = `nodejs14.x-${arch}.tgz`
     fs.closeSync(fs.openSync(`/tmp/${filename}`, 'w'))
 
     let cmd = 'tar -cpzf /tmp/' + filename +
