@@ -1,7 +1,7 @@
 // Run with:
-// docker run --rm -v "$PWD/build/docker":/var/task mlupin/docker-lambda:java8 org.lambci.lambda.ExampleHandler
+// docker run --rm -v "$PWD/build/docker":/var/task mlupin/docker-lambda:java8 pl.lupin.lambda.ExampleHandler
 
-package org.lambci.lambda;
+package pl.lupin.lambda;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;

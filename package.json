@@ -9,8 +9,8 @@
   "directories": {
     "example": "examples"
   },
-  "repository": "lambci/docker-lambda",
-  "author": "Michael Hart <michael@soothbooth.com>",
+  "repository": "mlupine/docker-lambda",
+  "author": "Maciej Wilczyński <maciej@lupine.software>",
   "license": "MIT",
   "engines": {
     "node": ">=0.11.12"
