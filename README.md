@@ -11,6 +11,10 @@ This is a partially rewritten and maintained fork of the original [LambCI](https
 updated to include latest AWS Lambda runtimes and arm64 support. However, this fork dropped support for old, Amazon Linux 1-based
 runtimes.
 
+The images are hosted on:
+* [Docker Hub](https://hub.docker.com/r/mlupin/docker-lambda)
+* [GitHub Container Repository](https://github.com/mLupine/docker-lambda/pkgs/container/docker-lambda)
+
 You can use it for [running your functions](#run-examples) in the same strict Lambda environment,
 knowing that they'll exhibit the same behavior when deployed live. You can
 also use it to [compile native dependencies](#build-examples) knowing that you're linking to the
@@ -23,6 +27,16 @@ the [AWS CLI](https://aws.amazon.com/cli/).
 
 - [docker-lambda](#docker-lambda)
   - [Contents](#contents)
+  - [Docker tags](#docker-tags)
+    - [nodejs12.x](#nodejs12x)
+    - [nodejs14.x](#nodejs14x)
+    - [python3.8](#python38)
+    - [python3.9](#python39)
+    - [ruby2.7](#ruby27)
+    - [java8.al2](#java8al2)
+    - [java11](#java11)
+    - [dotnetcore3.1](#dotnetcore31)
+    - [provided.al2](#providedal2)
   - [Usage](#usage)
     - [Running Lambda functions](#running-lambda-functions)
       - [Running in "stay-open" API mode](#running-in-stay-open-api-mode)
@@ -32,12 +46,202 @@ the [AWS CLI](https://aws.amazon.com/cli/).
   - [Build Examples](#build-examples)
   - [Using a Dockerfile to build](#using-a-dockerfile-to-build)
   - [Node.js module](#nodejs-module)
-  - [Docker tags](#docker-tags)
   - [Environment variables](#environment-variables)
   - [Build environment](#build-environment)
   - [Questions](#questions)
 
 ---
+
+## Docker tags
+
+### nodejs12.x
+
+Runtime images
+
+| Platform  | Docker Hub                               | GitHub Container Registry                         |
+| --------- | ---------------------------------------- | ------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs12.x`        | `ghcr.io/mlupine/docker-lambda:nodejs12.x`        |
+| x86_64    | `mlupin/docker-lambda:nodejs12.x-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs12.x-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs12.x-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs12.x-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                     | GitHub Container Registry                               |
+| --------- | ---------------------------------------------- | ------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs12.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs12.x-build`        |
+| x86_64    | `mlupin/docker-lambda:nodejs12.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs12.x-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs12.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs12.x-build-arm64`  |
+
+### nodejs14.x
+
+Runtime images
+
+| Platform  | Docker Hub                               | GitHub Container Registry                         |
+| --------- | ---------------------------------------- | ------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs14.x`        | `ghcr.io/mlupine/docker-lambda:nodejs14.x`        |
+| x86_64    | `mlupin/docker-lambda:nodejs14.x-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs14.x-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs14.x-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs14.x-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                     | GitHub Container Registry                               |
+| --------- | ---------------------------------------------- | ------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs14.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs14.x-build`        |
+| x86_64    | `mlupin/docker-lambda:nodejs14.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs14.x-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs14.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs14.x-build-arm64`  |
+
+### python3.8
+
+Runtime images
+
+| Platform  | Docker Hub                              | GitHub Container Registry                        |
+| --------- | --------------------------------------- | ------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:python3.8`        | `ghcr.io/mlupine/docker-lambda:python3.8`        |
+| x86_64    | `mlupin/docker-lambda:python3.8-x86_64` | `ghcr.io/mlupine/docker-lambda:python3.8-x86_64` |
+| arm64     | `mlupin/docker-lambda:python3.8-arm64`  | `ghcr.io/mlupine/docker-lambda:python3.8-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                    | GitHub Container Registry                              |
+| --------- | --------------------------------------------- | ------------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:python3.8-build`        | `ghcr.io/mlupine/docker-lambda:python3.8-build`        |
+| x86_64    | `mlupin/docker-lambda:python3.8-build-x86_64` | `ghcr.io/mlupine/docker-lambda:python3.8-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:python3.8-build-arm64`  | `ghcr.io/mlupine/docker-lambda:python3.8-build-arm64`  |
+
+### python3.9
+
+Runtime images
+
+| Platform  | Docker Hub                              | GitHub Container Registry                        |
+| --------- | --------------------------------------- | ------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:python3.9`        | `ghcr.io/mlupine/docker-lambda:python3.9`        |
+| x86_64    | `mlupin/docker-lambda:python3.9-x86_64` | `ghcr.io/mlupine/docker-lambda:python3.9-x86_64` |
+| arm64     | `mlupin/docker-lambda:python3.9-arm64`  | `ghcr.io/mlupine/docker-lambda:python3.9-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                    | GitHub Container Registry                              |
+| --------- | --------------------------------------------- | ------------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:python3.9-build`        | `ghcr.io/mlupine/docker-lambda:python3.9-build`        |
+| x86_64    | `mlupin/docker-lambda:python3.9-build-x86_64` | `ghcr.io/mlupine/docker-lambda:python3.9-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:python3.9-build-arm64`  | `ghcr.io/mlupine/docker-lambda:python3.9-build-arm64`  |
+
+### ruby2.7
+
+Runtime images
+
+| Platform  | Docker Hub                            | GitHub Container Registry                      |
+| --------- | ------------------------------------- | ---------------------------------------------- |
+| Universal | `mlupin/docker-lambda:ruby2.7`        | `ghcr.io/mlupine/docker-lambda:ruby2.7`        |
+| x86_64    | `mlupin/docker-lambda:ruby2.7-x86_64` | `ghcr.io/mlupine/docker-lambda:ruby2.7-x86_64` |
+| arm64     | `mlupin/docker-lambda:ruby2.7-arm64`  | `ghcr.io/mlupine/docker-lambda:ruby2.7-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                  | GitHub Container Registry                            |
+| --------- | ------------------------------------------- | ---------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:ruby2.7-build`        | `ghcr.io/mlupine/docker-lambda:ruby2.7-build`        |
+| x86_64    | `mlupin/docker-lambda:ruby2.7-build-x86_64` | `ghcr.io/mlupine/docker-lambda:ruby2.7-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:ruby2.7-build-arm64`  | `ghcr.io/mlupine/docker-lambda:ruby2.7-build-arm64`  |
+
+### java8.al2
+
+Runtime images
+
+| Platform  | Docker Hub                              | GitHub Container Registry                        |
+| --------- | --------------------------------------- | ------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:java8.al2`        | `ghcr.io/mlupine/docker-lambda:java8.al2`        |
+| x86_64    | `mlupin/docker-lambda:java8.al2-x86_64` | `ghcr.io/mlupine/docker-lambda:java8.al2-x86_64` |
+| arm64     | `mlupin/docker-lambda:java8.al2-arm64`  | `ghcr.io/mlupine/docker-lambda:java8.al2-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                    | GitHub Container Registry                              |
+| --------- | --------------------------------------------- | ------------------------------------------------------ |
+| Universal | `mlupin/docker-lambda:java8.al2-build`        | `ghcr.io/mlupine/docker-lambda:java8.al2-build`        |
+| x86_64    | `mlupin/docker-lambda:java8.al2-build-x86_64` | `ghcr.io/mlupine/docker-lambda:java8.al2-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:java8.al2-build-arm64`  | `ghcr.io/mlupine/docker-lambda:java8.al2-build-arm64`  |
+
+### java11
+
+Runtime images
+
+| Platform  | Docker Hub                           | GitHub Container Registry                     |
+| --------- | ------------------------------------ | --------------------------------------------- |
+| Universal | `mlupin/docker-lambda:java11`        | `ghcr.io/mlupine/docker-lambda:java11`        |
+| x86_64    | `mlupin/docker-lambda:java11-x86_64` | `ghcr.io/mlupine/docker-lambda:java11-x86_64` |
+| arm64     | `mlupin/docker-lambda:java11-arm64`  | `ghcr.io/mlupine/docker-lambda:java11-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                 | GitHub Container Registry                           |
+| --------- | ------------------------------------------ | --------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:java11-build`        | `ghcr.io/mlupine/docker-lambda:java11-build`        |
+| x86_64    | `mlupin/docker-lambda:java11-build-x86_64` | `ghcr.io/mlupine/docker-lambda:java11-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:java11-build-arm64`  | `ghcr.io/mlupine/docker-lambda:java11-build-arm64`  |
+
+### dotnetcore3.1
+
+Runtime images
+
+| Platform  | Docker Hub                                  | GitHub Container Registry                            |
+| --------- | ------------------------------------------- | ---------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:dotnetcore3.1`        | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1`        |
+| x86_64    | `mlupin/docker-lambda:dotnetcore3.1-x86_64` | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1-x86_64` |
+| arm64     | `mlupin/docker-lambda:dotnetcore3.1-arm64`  | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                        | GitHub Container Registry                                  |
+| --------- | ------------------------------------------------- | ---------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:dotnetcore3.1-build`        | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1-build`        |
+| x86_64    | `mlupin/docker-lambda:dotnetcore3.1-build-x86_64` | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:dotnetcore3.1-build-arm64`  | `ghcr.io/mlupine/docker-lambda:dotnetcore3.1-build-arm64`  |
+
+### provided.al2
+
+Runtime images
+
+| Platform  | Docker Hub                                 | GitHub Container Registry                           |
+| --------- | ------------------------------------------ | --------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:provided.al2`        | `ghcr.io/mlupine/docker-lambda:provided.al2`        |
+| x86_64    | `mlupin/docker-lambda:provided.al2-x86_64` | `ghcr.io/mlupine/docker-lambda:provided.al2-x86_64` |
+| arm64     | `mlupin/docker-lambda:provided.al2-arm64`  | `ghcr.io/mlupine/docker-lambda:provided.al2-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                       | GitHub Container Registry                                 |
+| --------- | ------------------------------------------------ | --------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:provided.al2-build`        | `ghcr.io/mlupine/docker-lambda:provided.al2-build`        |
+| x86_64    | `mlupin/docker-lambda:provided.al2-build-x86_64` | `ghcr.io/mlupine/docker-lambda:provided.al2-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:provided.al2-build-arm64`  | `ghcr.io/mlupine/docker-lambda:provided.al2-build-arm64`  |
+
+
+Each tag can be suffixed with the architecture it's meant to be run on. Otherwise, Docker will use the
+architecture matching the host system. For example:
+```sh
+# This will always execute the code in an x86_64 evironment (native on x86 computers, emulated on arm64)
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-x86_64 index.handler
+
+# This will always execute the code in an arm64 evironment (native on arm64 computers, emulated on x86)
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-arm64 index.handler
+
+# This will always execute the code in an evironment matching the host computer architecture
+docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
+```
+
+You might see the following message when trying to run a container built for an architecture different than your host:
+```
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm/v8) and no specific platform was requested
+```
+
+In that case, you need to install QEMU bindings on your machine so that containers can be emulated properly. To do that,
+simply execute the following command once:
+```sh
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+Keep in mind that running emulated arm64 images on x86 machines and vice-versa is going to be painfully slow.
 
 ## Usage
 
@@ -154,7 +358,10 @@ docker run [--rm] -v <code_dir>:/var/task [-v <layer_dir>:/opt] mlupin/docker-la
 ```sh
 # Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
-```sh
+
+# Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x; image downloaded from GitHub Container Repo
+docker run --rm -v "$PWD":/var/task:ro,delegated ghcr.io/mlupine/docker-lambda:nodejs12.x index.handler
+
 # Test a `handler` function from an `index.js` file in the current directory on Node.js v12.x, forcing x86_64 arch to be used
 docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-x86_64 index.handler
 
@@ -269,55 +476,6 @@ Options to pass to `dockerLambda()`:
   - `dockerArgs`
   - `spawnOptions`
   - `returnSpawnResult`
-
-## Docker tags
-
-These follow the Lambda runtime names:
-
-  - `nodejs12.x`
-  - `nodejs14.x`
-  - `python3.8`
-  - `python3.9`
-  - `ruby2.7`
-  - `java8.al2`
-  - `java11`
-  - `dotnetcore3.1`
-  - `provided.al2`
-  - `nodejs12.x-build`
-  - `nodejs14.x-build`
-  - `python3.8-build`
-  - `python3.9-build`
-  - `ruby2.7-build`
-  - `java8.al2-build`
-  - `java11-build`
-  - `dotnetcore3.1-build`
-  - `provided.al2-build`
-
-However, each tag can also be suffixed with the architecture it's meant to be run on. Otherwise, Docker will use the
-architecture matching the host system. For example:
-```sh
-# This will always execute the code in an x86_64 evironment (native on x86 computers, emulated on arm64)
-docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-x86_64 index.handler
-
-# This will always execute the code in an arm64 evironment (native on arm64 computers, emulated on x86)
-docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x-arm64 index.handler
-
-# This will always execute the code in an evironment matching the host computer architecture
-docker run --rm -v "$PWD":/var/task:ro,delegated mlupin/docker-lambda:nodejs12.x index.handler
-```
-
-You might see the following message when trying to run a container built for an architecture different than your host:
-```
-WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm/v8) and no specific platform was requested
-```
-
-In that case, you need to install QEMU bindings on your machine so that containers can be emulated properly. To do that,
-simply execute the following command once:
-```sh
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-```
-
-Keep in mind that running emulated arm64 images on x86 machines and vice-versa is going to be painfully slow.
 
 ## Environment variables
 
