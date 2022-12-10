@@ -8,6 +8,7 @@ cd ${EXAMPLES_DIR}/nodejs
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs12.x index.handler
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs14.x index.handler
 docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs16.x index.handler
+docker run --rm -v "$PWD":/var/task mlupin/docker-lambda:nodejs18.x index.handler
 
 cd ${EXAMPLES_DIR}/nodejs-native-module
 npm install

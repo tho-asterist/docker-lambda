@@ -31,6 +31,7 @@ the [AWS CLI](https://aws.amazon.com/cli/).
     - [nodejs12.x](#nodejs12x)
     - [nodejs14.x](#nodejs14x)
     - [nodejs16.x](#nodejs16x)
+    - [nodejs18.x](#nodejs18x)
     - [python3.8](#python38)
     - [python3.9](#python39)
     - [ruby2.7](#ruby27)
@@ -109,6 +110,24 @@ Build images
 | Universal | `mlupin/docker-lambda:nodejs16.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs16.x-build`        |
 | x86_64    | `mlupin/docker-lambda:nodejs16.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs16.x-build-x86_64` |
 | arm64     | `mlupin/docker-lambda:nodejs16.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs16.x-build-arm64`  |
+
+### nodejs18.x
+
+Runtime images
+
+| Platform  | Docker Hub                               | GitHub Container Registry                         |
+| --------- | ---------------------------------------- | ------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs18.x`        | `ghcr.io/mlupine/docker-lambda:nodejs18.x`        |
+| x86_64    | `mlupin/docker-lambda:nodejs18.x-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs18.x-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs18.x-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs18.x-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                     | GitHub Container Registry                               |
+| --------- | ---------------------------------------------- | ------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs18.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build`        |
+| x86_64    | `mlupin/docker-lambda:nodejs18.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs18.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build-arm64`  |
 
 
 ### python3.8
@@ -223,19 +242,19 @@ Build images
 
 Runtime images
 
-| Platform  | Docker Hub                                  | GitHub Container Registry                            |
-| --------- | ------------------------------------------- | ---------------------------------------------------- |
-| Universal | `mlupin/docker-lambda:dotnet6`              | `ghcr.io/mlupine/docker-lambda:dotnet6`              |
-| x86_64    | `mlupin/docker-lambda:dotnet6-x86_64`       | `ghcr.io/mlupine/docker-lambda:dotnet6-x86_64`       |
-| arm64     | `mlupin/docker-lambda:dotnet6-arm64`        | `ghcr.io/mlupine/docker-lambda:dotnet6-arm64`        |
+| Platform  | Docker Hub                            | GitHub Container Registry                      |
+| --------- | ------------------------------------- | ---------------------------------------------- |
+| Universal | `mlupin/docker-lambda:dotnet6`        | `ghcr.io/mlupine/docker-lambda:dotnet6`        |
+| x86_64    | `mlupin/docker-lambda:dotnet6-x86_64` | `ghcr.io/mlupine/docker-lambda:dotnet6-x86_64` |
+| arm64     | `mlupin/docker-lambda:dotnet6-arm64`  | `ghcr.io/mlupine/docker-lambda:dotnet6-arm64`  |
 
 Build images
 
-| Platform  | Docker Hub                                        | GitHub Container Registry                                  |
-| --------- | ------------------------------------------------- | ---------------------------------------------------------- |
-| Universal | `mlupin/docker-lambda:dotnet6-build`              | `ghcr.io/mlupine/docker-lambda:dotnet6-build`              |
-| x86_64    | `mlupin/docker-lambda:dotnet6-build-x86_64`       | `ghcr.io/mlupine/docker-lambda:dotnet6-build-x86_64`       |
-| arm64     | `mlupin/docker-lambda:dotnet6-build-arm64`        | `ghcr.io/mlupine/docker-lambda:dotnet6-build-arm64`        |
+| Platform  | Docker Hub                                  | GitHub Container Registry                            |
+| --------- | ------------------------------------------- | ---------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:dotnet6-build`        | `ghcr.io/mlupine/docker-lambda:dotnet6-build`        |
+| x86_64    | `mlupin/docker-lambda:dotnet6-build-x86_64` | `ghcr.io/mlupine/docker-lambda:dotnet6-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:dotnet6-build-arm64`  | `ghcr.io/mlupine/docker-lambda:dotnet6-build-arm64`  |
 
 ### provided.al2
 

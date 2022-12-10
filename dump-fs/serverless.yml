@@ -1,6 +1,6 @@
 service: docker-lambda-dump
 
-frameworkVersion: "2"
+frameworkVersion: "3"
 
 provider:
   name: aws
@@ -259,6 +259,27 @@ functions:
         - "!**"
         - "dump-nodejs16x/**"
     runtime: nodejs16.x
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
+
+  dump-nodejs18x-x86_64:
+    handler: dump-nodejs18x/handler.handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs18x/**"
+    runtime: nodejs18.x
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-nodejs18x-arm64:
+    handler: dump-nodejs18x/handler.handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs18x/**"
+    runtime: nodejs18.x
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }
