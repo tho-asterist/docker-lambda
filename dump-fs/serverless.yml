@@ -37,7 +37,7 @@ functions:
       patterns:
         - "!**"
         - "dump-base-2/**"
-    runtime: nodejs12.x
+    runtime: nodejs18.x
     architecture: x86_64
     layers:
       - { Ref: TarX86LambdaLayer }
@@ -47,7 +47,7 @@ functions:
       patterns:
         - "!**"
         - "dump-base-2/**"
-    runtime: nodejs12.x
+    runtime: nodejs18.x
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }

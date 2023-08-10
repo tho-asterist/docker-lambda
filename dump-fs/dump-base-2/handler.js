@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { execSync } = require('child_process')
-const AWS = require('aws-sdk')
-const s3 = new AWS.S3()
+const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3")
+const s3 = new S3Client({ region: 'eu-central-1' });
 
 module.exports.handler_x86_64 = (async (e, c) => { return handler(e, c, "x86_64") })
 module.exports.handler_arm64 = (async (e, c) => { return handler(e, c, "arm64") })
@@ -22,12 +22,12 @@ handler = async (event, context, arch) => {
 
     console.log('Zipping done! Uploading...')
 
-    let data = await s3.upload({
+    let data = await s3.send(new PutObjectCommand({
         Bucket: 'docker-lambda',
         Key: 'fs/' + filename,
         Body: fs.createReadStream('/tmp/' + filename),
         ACL: 'public-read',
-    }).promise()
+    }))
 
     console.log('Uploading done!')
 

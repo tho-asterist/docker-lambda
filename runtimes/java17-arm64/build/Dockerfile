@@ -13,7 +13,7 @@ COPY --from=0 /var/rapid /var/rapid
 
 RUN mkdir /usr/local/gradle && curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.2.1-bin.zip && \
   unzip -qd /usr/local/gradle gradle.zip && rm gradle.zip && mkdir /usr/local/maven && \
-  curl -L https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.tar.gz | \
+  curl -L https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz | \
   tar -zx -C /usr/local/maven
 
 ENV PATH="/usr/local/gradle/gradle-8.2.1/bin:/usr/local/maven/apache-maven-3.9.3/bin:${PATH}"

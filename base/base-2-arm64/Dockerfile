@@ -5,7 +5,7 @@ FROM arm64v8/amazonlinux:2
 # So this is expected to be downloaded from https://docker-lambda.s3.amazonaws.com/fs/base-2-arm64.tgz
 ADD ./base-2-arm64.tgz /opt/
 
-RUN yum --installroot=/opt install -y glibc-2.26-55.amzn2.aarch64 glibc-common-2.26-55.amzn2.aarch64 openssl-libs-1.0.2k-19.amzn2.0.8.aarch64 libicu-50.2-4.amzn2.aarch64 && \
+RUN yum --installroot=/opt install -y glibc-2.26-63.amzn2.aarch64 glibc-common-2.26-63.amzn2.aarch64 openssl-libs-1.0.2k-24.amzn2.0.7.aarch64 libicu-50.2-4.amzn2.aarch64 && \
   yum --installroot=/opt reinstall -y filesystem-3.2-25.amzn2.0.4.aarch64 setup-2.8.71-10.amzn2.0.1.noarch && \
   yum --installroot=/opt clean all
 

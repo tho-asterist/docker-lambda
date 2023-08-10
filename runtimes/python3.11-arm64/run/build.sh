@@ -2,4 +2,4 @@
 
 set -euxo pipefail
 
-docker build --progress plain --squash -t mlupin/docker-lambda:python3.11-arm64 .
+docker build --progress plain --no-cache --squash -t mlupin/docker-lambda:python3.11-arm64 .
