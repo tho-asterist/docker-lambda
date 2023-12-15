@@ -363,3 +363,24 @@ functions:
     architecture: arm64
     layers:
       - { Ref: TarARMLambdaLayer }
+
+  dump-nodejs20x-x86_64:
+    handler: dump-nodejs20x/handler.handler_x86_64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs20x/**"
+    runtime: nodejs20.x
+    architecture: x86_64
+    layers:
+      - { Ref: TarX86LambdaLayer }
+  dump-nodejs20x-arm64:
+    handler: dump-nodejs20x/handler.handler_arm64
+    package:
+      patterns:
+        - "!**"
+        - "dump-nodejs20x/**"
+    runtime: nodejs20.x
+    architecture: arm64
+    layers:
+      - { Ref: TarARMLambdaLayer }
