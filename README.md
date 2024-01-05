@@ -32,6 +32,7 @@ the [AWS CLI](https://aws.amazon.com/cli/).
     - [nodejs14.x](#nodejs14x)
     - [nodejs16.x](#nodejs16x)
     - [nodejs18.x](#nodejs18x)
+    - [nodejs20.x](#nodejs20x)
     - [python3.8](#python38)
     - [python3.9](#python39)
     - [python3.10](#python310)
@@ -132,6 +133,24 @@ Build images
 | Universal | `mlupin/docker-lambda:nodejs18.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build`        |
 | x86_64    | `mlupin/docker-lambda:nodejs18.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build-x86_64` |
 | arm64     | `mlupin/docker-lambda:nodejs18.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs18.x-build-arm64`  |
+
+### nodejs20.x
+
+Runtime images
+
+| Platform  | Docker Hub                               | GitHub Container Registry                         |
+| --------- | ---------------------------------------- | ------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs20.x`        | `ghcr.io/mlupine/docker-lambda:nodejs20.x`        |
+| x86_64    | `mlupin/docker-lambda:nodejs20.x-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs20.x-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs20.x-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs20.x-arm64`  |
+
+Build images
+
+| Platform  | Docker Hub                                     | GitHub Container Registry                               |
+| --------- | ---------------------------------------------- | ------------------------------------------------------- |
+| Universal | `mlupin/docker-lambda:nodejs20.x-build`        | `ghcr.io/mlupine/docker-lambda:nodejs20.x-build`        |
+| x86_64    | `mlupin/docker-lambda:nodejs20.x-build-x86_64` | `ghcr.io/mlupine/docker-lambda:nodejs20.x-build-x86_64` |
+| arm64     | `mlupin/docker-lambda:nodejs20.x-build-arm64`  | `ghcr.io/mlupine/docker-lambda:nodejs20.x-build-arm64`  |
 
 
 ### python3.8
